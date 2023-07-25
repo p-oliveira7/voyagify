@@ -6,8 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "reviews")
-@Entity(name = "review")
+@Table(name = "users")
+@Entity(name = "User")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,11 +21,20 @@ public class User {
 
     private String email;
 
-    private String nationality;
+    @Enumerated(EnumType.STRING)
+    private Country country;
 
     @Column(name = "user_type")
     @Enumerated(EnumType.STRING)
     private Role role;
 
     private String password;
+
+    public User(UserInputDTO dto) {
+        this.name = dto.name();
+        this.email = dto.email();
+        this.country = dto.country();
+        this.role = dto.Role();
+        this.password = dto.password();
+    }
 }

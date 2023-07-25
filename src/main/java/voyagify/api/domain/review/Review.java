@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import voyagify.api.domain.user.User;
 
 @Table(name = "reviews")
-@Entity(name = "review")
+@Entity(name = "Review")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
