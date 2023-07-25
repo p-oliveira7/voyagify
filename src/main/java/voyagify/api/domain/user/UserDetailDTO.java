@@ -1,8 +1,5 @@
 package voyagify.api.domain.user;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
 public record UserDetailDTO(
         Long id,
         String name,
@@ -11,7 +8,7 @@ public record UserDetailDTO(
 
         Country country,
 
-        Role Role,
+        Role role,
 
         String password ){
 

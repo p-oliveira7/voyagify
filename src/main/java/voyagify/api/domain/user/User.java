@@ -34,7 +34,7 @@ public class User {
         this.name = dto.name();
         this.email = dto.email();
         this.country = dto.country();
-        this.role = dto.Role();
+        this.role = dto.role();
         this.password = dto.password();
     }
 }
