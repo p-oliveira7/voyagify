@@ -21,7 +21,7 @@ public class ReviewController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity postReview(@RequestBody @Valid ReviewInputDTO review){
+    public ResponseEntity postReview(@RequestBody @Valid ReviewInputDTO reviewInputDTO ){
         return null;
     }
 }

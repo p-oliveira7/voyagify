@@ -3,9 +3,8 @@ package voyagify.api.domain.user;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
-public record UserInputDTO(
+public record RegisterDTO(
         @NotBlank
         String name,
         @NotBlank
@@ -14,8 +13,8 @@ public record UserInputDTO(
         @NotNull
         Country country,
         @NotNull
-        Role role,
+        UserRole userRole,
         // NOTE: Passwords must be securely hashed for JWT authentication.
         @NotBlank
-        String password ) {
+        String password) {
 }
