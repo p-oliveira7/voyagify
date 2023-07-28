@@ -44,4 +44,9 @@ public class ReviewService {
                 .map(review -> new ReviewDataDTO(review.getUser().getName(), review.getText()))
                 .collect(Collectors.toList());
     }
+
+    public Page<ReviewDataDTO> getReviewsByUserId(Long userId, Pageable pageable) {
+        Page<Review> reviewPage = reviewRepository.findByUserId(userId, pageable);
+        return reviewPage.map(review -> new ReviewDataDTO(review.getUser().getName(), review.getText()));
+    }
 }

@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("SELECT r FROM Review r ORDER BY function('RAND')")
     Page<Review> findRandomReviews(Pageable pageable);
+
+    Page<Review> findByUserId(Long userId, Pageable pageable);
 }
