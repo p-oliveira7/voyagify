@@ -1,6 +1,5 @@
 package voyagify.api.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import voyagify.api.domain.review.ReviewDataDTO;
 import voyagify.api.domain.review.ReviewService;
 import voyagify.api.domain.review.ReviewInputDTO;
 import voyagify.api.domain.review.ReviewRepository;
-import voyagify.api.domain.user.UserService;
+import voyagify.api.domain.user.User;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -30,15 +29,13 @@ public class ReviewController {
 
     @PostMapping("/add")
     @Transactional
-    public ResponseEntity postReview(
-            @RequestBody @Valid ReviewInputDTO data,
-            @Autowired HttpServletRequest request) throws IOException {
+    public ResponseEntity postReview(@RequestBody @Valid ReviewInputDTO data){
 
-        String authHeader = request.getHeader("Authorization");
+     User user = (User) SecurityContextHolder.getContext().getAuthentication()
+               .getPrincipal();
+       var dto = reviewService.create(data, user.getId());
 
-        var dto = reviewService.create(data, authHeader);
-
-        return ResponseEntity.ok(dto);
+       return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/random")
@@ -49,9 +46,11 @@ public class ReviewController {
     }
     @GetMapping("/user")
     public ResponseEntity<Page<ReviewDataDTO>> getReviewsByUserId(
-            @PathVariable Long userId,
             @PageableDefault(size = 3, sort = "text") Pageable pageable) {
-        Page<ReviewDataDTO> page = reviewService.getReviewsByUserId(userId, pageable);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+
+        Page<ReviewDataDTO> page = reviewService.getReviewsByUserId(user.getId(), pageable);
         return ResponseEntity.ok(page);
     }
 }

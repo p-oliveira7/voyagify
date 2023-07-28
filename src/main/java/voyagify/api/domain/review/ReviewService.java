@@ -7,7 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import voyagify.api.domain.user.UserRepository;
-import voyagify.api.domain.user.UserService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,22 +14,18 @@ import java.util.stream.Collectors;
 @Service
 public class ReviewService {
     @Autowired
-    private UserService userService;
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private ReviewRepository reviewRepository;
 
-    public ReviewDataDTO create(ReviewInputDTO data, String token){
+    public ReviewDataDTO create(ReviewInputDTO data, Long userId) {
 
-        var userEmail = String.valueOf(userService.getUserEmailFromToken(token));
-
-        if(!userRepository.existsByEmail(userEmail)){
+        if (!userRepository.existsById(userId)) {
             throw new ValidationException("User does not exist");
         }
 
-        var user =  userRepository.findUserByEmail(userEmail);
+        var user = userRepository.findUserById(userId);
 
         var name = user.getName();
         var textReview = data.text();
@@ -43,6 +38,7 @@ public class ReviewService {
 
         return new ReviewDataDTO(id, name, textReview);
     }
+
     //NOTE: This method should always return 3 reviews to be called when the page is displayed.
     public List<ReviewDataDTO> getRandomReviews() {
         Pageable pageable = PageRequest.of(0, 3);
@@ -53,7 +49,8 @@ public class ReviewService {
     }
 
     public Page<ReviewDataDTO> getReviewsByUserId(Long userId, Pageable pageable) {
-        Page<Review> reviewPage = reviewRepository.findByUserId(userId, pageable);
+        System.out.println(userId);
+        Page<Review> reviewPage = reviewRepository.findAllByUserId(userId, pageable);
         return reviewPage.map(review -> new ReviewDataDTO(review.getId(), review.getUser().getName(), review.getText()));
     }
 }

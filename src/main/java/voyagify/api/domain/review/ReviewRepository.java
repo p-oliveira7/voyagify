@@ -9,5 +9,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("SELECT r FROM Review r ORDER BY function('RAND')")
     Page<Review> findRandomReviews(Pageable pageable);
 
-    Page<Review> findByUserId(Long userId, Pageable pageable);
+    Page<Review> findAllByUserId(Long userId, Pageable pageable);
 }

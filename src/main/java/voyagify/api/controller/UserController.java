@@ -18,6 +18,6 @@ public class UserController {
     public ResponseEntity detail(@PathVariable Long id){
         var user = repository.getReferenceById(id);
 
-        return ResponseEntity.ok(new UserDetailDTO((User) user));
+        return null;
     }
 }

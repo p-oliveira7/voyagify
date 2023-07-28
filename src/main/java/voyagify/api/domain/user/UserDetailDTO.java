@@ -1,13 +1,10 @@
 package voyagify.api.domain.user;
 
 public record UserDetailDTO(
-
+        Long id,
         String name,
+        String email,
         Country country
 
-        ){
+        ){}
 
-    public UserDetailDTO(User user){
-        this(user.getName(), user.getCountry());
-    }
-}
