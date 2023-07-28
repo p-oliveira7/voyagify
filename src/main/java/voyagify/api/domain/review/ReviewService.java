@@ -6,8 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import voyagify.api.domain.user.User;
 import voyagify.api.domain.user.UserRepository;
+import voyagify.api.domain.user.UserService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,17 +15,22 @@ import java.util.stream.Collectors;
 @Service
 public class ReviewService {
     @Autowired
+    private UserService userService;
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private ReviewRepository reviewRepository;
 
-    public ReviewDataDTO create(ReviewInputDTO data){
-        if(!userRepository.existsById(data.idUser())){
+    public ReviewDataDTO create(ReviewInputDTO data, String token){
+
+        var userEmail = String.valueOf(userService.getUserEmailFromToken(token));
+
+        if(!userRepository.existsByEmail(userEmail)){
             throw new ValidationException("User does not exist");
         }
 
-        var user = userRepository.findById(data.idUser()).get();
+        var user =  userRepository.findUserByEmail(userEmail);
 
         var name = user.getName();
         var textReview = data.text();
@@ -34,19 +39,21 @@ public class ReviewService {
 
         reviewRepository.save(review);
 
-        return new ReviewDataDTO(name, textReview);
-    }
+        var id = review.getId();
 
+        return new ReviewDataDTO(id, name, textReview);
+    }
+    //NOTE: This method should always return 3 reviews to be called when the page is displayed.
     public List<ReviewDataDTO> getRandomReviews() {
         Pageable pageable = PageRequest.of(0, 3);
         Page<Review> page = reviewRepository.findRandomReviews(pageable);
         return page.stream()
-                .map(review -> new ReviewDataDTO(review.getUser().getName(), review.getText()))
+                .map(review -> new ReviewDataDTO(review.getId(), review.getUser().getName(), review.getText()))
                 .collect(Collectors.toList());
     }
 
     public Page<ReviewDataDTO> getReviewsByUserId(Long userId, Pageable pageable) {
         Page<Review> reviewPage = reviewRepository.findByUserId(userId, pageable);
-        return reviewPage.map(review -> new ReviewDataDTO(review.getUser().getName(), review.getText()));
+        return reviewPage.map(review -> new ReviewDataDTO(review.getId(), review.getUser().getName(), review.getText()));
     }
 }
