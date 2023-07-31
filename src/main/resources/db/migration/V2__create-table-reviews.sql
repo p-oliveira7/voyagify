@@ -1,8 +1,10 @@
 create table reviews(
 
     id bigint not null auto_increment,
-    user_id varchar(100) not null,
+    user_id bigint not null,
     text varchar(2000) not null,
 
-     primary key(id)
+     primary key(id),
+
+     constraint fk_reviews_user_id foreign key (user_id) references users(id)
 );
