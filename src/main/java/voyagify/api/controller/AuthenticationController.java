@@ -7,7 +7,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import voyagify.api.domain.user.*;
+import voyagify.api.domain.user.AuthenticationDTO;
+import voyagify.api.domain.user.LoginResponseDTO;
+import voyagify.api.domain.user.RegisterDTO;
+import voyagify.api.domain.user.User;
+import voyagify.api.domain.user.UserRepository;
 import voyagify.api.infra.security.TokenService;
 
 @RestController

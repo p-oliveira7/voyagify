@@ -1,7 +1,9 @@
 package voyagify.api.domain.review;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record ReviewDataDTO(
-        Long id,
-        String userName,
-        String text) {
+        @NotBlank
+        String text ) {
+
 }

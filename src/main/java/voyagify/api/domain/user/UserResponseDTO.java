@@ -1,10 +1,10 @@
 package voyagify.api.domain.user;
 
-public record UserDetailDTO(
-        Long id,
+public record UserResponseDTO(
         String name,
         String email,
-        Country country
+        Country country,
+        byte[] image
 
         ){}
 

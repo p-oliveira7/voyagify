@@ -36,6 +36,10 @@ public class User implements UserDetails {
 
     private String password;
 
+    @Column(name = "image_path")
+    private String imagePath;
+
+
     public User(String name, String email, Country country, UserRole userRole, String password){
         this.name = name;
         this.email = email;
@@ -79,4 +83,7 @@ public class User implements UserDetails {
         return true;
     }
 
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 }

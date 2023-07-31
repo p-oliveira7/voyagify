@@ -19,7 +19,7 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    public ReviewDataDTO create(ReviewInputDTO data, Long userId) {
+    public ReviewResponseDTO create(ReviewDataDTO data, Long userId) {
 
         if (!userRepository.existsById(userId)) {
             throw new ValidationException("User does not exist");
@@ -36,21 +36,21 @@ public class ReviewService {
 
         var id = review.getId();
 
-        return new ReviewDataDTO(id, name, textReview);
+        return new ReviewResponseDTO(id, name, textReview);
     }
 
     //NOTE: This method should always return 3 reviews to be called when the page is displayed.
-    public List<ReviewDataDTO> getRandomReviews() {
+    public List<ReviewResponseDTO> getRandomReviews() {
         Pageable pageable = PageRequest.of(0, 3);
         Page<Review> page = reviewRepository.findRandomReviews(pageable);
         return page.stream()
-                .map(review -> new ReviewDataDTO(review.getId(), review.getUser().getName(), review.getText()))
+                .map(review -> new ReviewResponseDTO(review.getId(), review.getUser().getName(), review.getText()))
                 .collect(Collectors.toList());
     }
 
-    public Page<ReviewDataDTO> getReviewsByUserId(Long userId, Pageable pageable) {
-        System.out.println(userId);
+    public Page<ReviewResponseDTO> getReviewsByUserId(Long userId, Pageable pageable) {
         Page<Review> reviewPage = reviewRepository.findAllByUserId(userId, pageable);
-        return reviewPage.map(review -> new ReviewDataDTO(review.getId(), review.getUser().getName(), review.getText()));
+
+        return reviewPage.map(review -> new ReviewResponseDTO(review.getId(), review.getUser().getName(), review.getText()));
     }
 }
