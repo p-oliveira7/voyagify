@@ -12,8 +12,7 @@ import voyagify.api.domain.review.ReviewResponseDTO;
 import voyagify.api.domain.review.ReviewService;
 import voyagify.api.domain.review.ReviewDataDTO;
 import voyagify.api.domain.review.ReviewRepository;
-import voyagify.api.domain.user.User;
-import voyagify.api.infra.security.SecurityUtils;
+
 
 import java.util.List;
 
@@ -32,7 +31,6 @@ public class ReviewController {
     @PostMapping("/add")
     @Transactional
     public ResponseEntity postReview(@RequestBody @Valid ReviewDataDTO data){
-
         var user = getAuthenticatedUser();
 
        var dto = reviewService.create(data, user);

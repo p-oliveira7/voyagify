@@ -32,8 +32,7 @@ public class UserService {
             throw new FileTooLargeException("Profile picture is too large");
         }
         if (!MediaType.IMAGE_JPEG.isCompatibleWith(MediaType.parseMediaType(file.getContentType())) &&
-                !MediaType.IMAGE_PNG.isCompatibleWith(MediaType.parseMediaType(file.getContentType())) &&
-                !MediaType.IMAGE_GIF.isCompatibleWith(MediaType.parseMediaType(file.getContentType()))) {
+                !MediaType.IMAGE_PNG.isCompatibleWith(MediaType.parseMediaType(file.getContentType()))) {
             throw new InvalidFileException("Invalid file type. Only image files (JPEG, PNG) are allowed.");
         }
         try {
@@ -53,8 +52,12 @@ public class UserService {
     }
 
     public byte[] downloadImageFromFileSystem(String filePath) throws IOException {
-        byte[] image = readAllBytes(new File(filePath).toPath());
-        return image;
+        if (filePath == null || filePath.isEmpty()) {
+            return null;
+        } else {
+            byte[] image = readAllBytes(new File(filePath).toPath());
+            return image;
+        }
     }
     public UserResponseDTO userDetail(Long id) throws IOException {
        var user = userRepository.findUserById(id);
