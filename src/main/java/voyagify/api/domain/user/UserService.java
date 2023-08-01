@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import voyagify.api.domain.exception.FileTooLargeException;
 import voyagify.api.domain.exception.InvalidFileException;
+import voyagify.api.domain.user.validation.Validation;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import static java.nio.file.Files.readAllBytes;
 
@@ -23,22 +25,23 @@ public class UserService {
     private int maxProfilePictureSize;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private List<Validation> validations;
 
     public void uploadProfileImage(Long id, MultipartFile file) {
-        if (!userRepository.existsById(id)) {
-            throw new ValidationException("User not found");
-        }
-        if (file.getSize() > maxProfilePictureSize) {
-            throw new FileTooLargeException("Profile picture is too large");
-        }
-        if (!MediaType.IMAGE_JPEG.isCompatibleWith(MediaType.parseMediaType(file.getContentType())) &&
-                !MediaType.IMAGE_PNG.isCompatibleWith(MediaType.parseMediaType(file.getContentType()))) {
-            throw new InvalidFileException("Invalid file type. Only image files (JPEG, PNG) are allowed.");
-        }
+
+        // NOTE: Execute all validations for the profile picture by iterating over the list of Validation objects.
+        validations.forEach(v ->v.validate(id, file));
+
         try {
             String filePath=imagePath+id+file.getOriginalFilename();
 
             var user =userRepository.findUserById(id);
+
+            if (user.getImagePath() != null && !user.getImagePath().isEmpty()) {
+                // NOTE: Delete the old image if it exists.
+                new File(user.getImagePath()).delete();
+            }
 
             user.setImagePath(filePath);
 
