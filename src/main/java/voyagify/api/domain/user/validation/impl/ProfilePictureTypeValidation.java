@@ -1,12 +1,12 @@
 package voyagify.api.domain.user.validation.impl;
 
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import voyagify.api.domain.exception.InvalidFileException;
 import voyagify.api.domain.user.validation.Validation;
 
-@Service
+@Component
 public class ProfilePictureTypeValidation implements Validation {
     @Override
     public void validate(Long id, MultipartFile file) {

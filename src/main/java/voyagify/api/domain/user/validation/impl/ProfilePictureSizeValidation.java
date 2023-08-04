@@ -1,12 +1,12 @@
 package voyagify.api.domain.user.validation.impl;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import voyagify.api.domain.exception.FileTooLargeException;
 import voyagify.api.domain.user.validation.Validation;
 
-@Service
+@Component
 public class ProfilePictureSizeValidation implements Validation {
     @Value("${max.profile.picture.size}")
     private int maxProfilePictureSize;

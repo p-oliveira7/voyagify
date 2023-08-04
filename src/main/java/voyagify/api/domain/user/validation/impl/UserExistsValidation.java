@@ -2,12 +2,12 @@ package voyagify.api.domain.user.validation.impl;
 
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import voyagify.api.domain.user.UserRepository;
 import voyagify.api.domain.user.validation.Validation;
 
-@Service
+@Component
 public class UserExistsValidation implements Validation {
     @Autowired
     private UserRepository userRepository;

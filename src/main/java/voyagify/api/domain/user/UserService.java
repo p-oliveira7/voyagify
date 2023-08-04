@@ -1,13 +1,9 @@
 package voyagify.api.domain.user;
 
-import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import voyagify.api.domain.exception.FileTooLargeException;
-import voyagify.api.domain.exception.InvalidFileException;
 import voyagify.api.domain.user.validation.Validation;
 
 import java.io.File;
